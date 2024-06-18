@@ -6,6 +6,7 @@ export default function RootLayout() {
   
   return (
     <>
+    <StatusBar style="light" backgroundColor={darkTheme.colors.background}/>
     <Stack screenOptions={
       { headerStyle: 
           { backgroundColor: darkTheme.colors.background },
@@ -14,10 +15,9 @@ export default function RootLayout() {
       }
     }>
       
-      <Stack.Screen name="index" />
-      <Stack.Screen name="emom" />
-    </Stack>
-    <StatusBar style="light" backgroundColor={darkTheme.colors.background}/>
+      <Stack.Screen name="index" options={{title: ""}} />
+      <Stack.Screen name="emom" options={{title: ""}}/>
+    </Stack> 
     </>
   );
 }
