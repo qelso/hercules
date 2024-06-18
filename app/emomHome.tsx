@@ -8,6 +8,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Collapsible } from "@/components/Collapsible";
 import Timer from "@/components/Timer";
 import { useState } from "react";
+import { Link } from "expo-router";
 
 export default function Emom() {
 
@@ -20,13 +21,12 @@ export default function Emom() {
             <SafeAreaProvider>
 
                 <View style={{ ...styles.container }}>
-                    {selected ? <Timer seconds={10}></Timer> :
-                        <>
-                            <Text variant="displayMedium"> {minutes} Minutes</Text>
-                            <Button mode='contained' onPress={() => setSelected(true)}>Start</Button>
 
-                        </>
-                    }
+                    <Text variant="displayMedium"> EMOM </Text>
+                    <Text variant="bodyLarge"> Ogni minuto al minuto per {minutes} minuti </Text>
+
+                    <Link href="/emomTimer"><Button mode='contained'>Start</Button></Link>
+
                 </View>
             </SafeAreaProvider>
         </PaperProvider>
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'space-evenly',
         backgroundColor: darkTheme.colors.background
     },
 });

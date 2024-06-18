@@ -1,6 +1,6 @@
 import { StyleSheet, Pressable} from "react-native"
 import { useEffect, useState } from "react"
-import { Text,useTheme, Button } from "react-native-paper"
+import { Text,useTheme, Button, ActivityIndicator } from "react-native-paper"
 
 export default function Timer(props: any) {
     const [seconds, setSeconds] = useState(props.seconds)
@@ -40,9 +40,10 @@ export default function Timer(props: any) {
     }
     return (
         <>
-        <Pressable onPress={()=>setIsRunning(!isRunning)}>
+        <Pressable onPress={()=> setIsRunning(!isRunning)}>
         <Text variant="displayLarge" style={{color:theme.colors.primary}}> {formatTime(seconds)} </Text>
        </Pressable> 
+        <ActivityIndicator animating={true}  />
         </>
     )
 
