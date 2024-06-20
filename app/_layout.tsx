@@ -16,9 +16,9 @@ export default function RootLayout() {
         }
       }>
 
-        <Stack.Screen name="index" options={{ title: "index", }} />
-        <Stack.Screen name="emomHome" options={{ title: "emom", }} /> 
-        <Stack.Screen name="emomTimer" options={{ title: "emom", }} /> 
+        <Stack.Screen name="index" options={{ title: "", }} />
+        <Stack.Screen name="emomHome" options={{ title: "", }} /> 
+        <Stack.Screen name="emomTimer" options={{ title: "", }} /> 
 
       </Stack>
     </>
