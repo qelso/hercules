@@ -13,39 +13,49 @@ const { width, height } = Dimensions.get("window")
 export default function Emom() {
 
 
-    const [minutes, setMinutes] = useState(0)
-    const [current, setCurrent] = useState(0)
+    const [minutes, setMinutes] = useState<number>(1)
+    const [current, setCurrent] = useState<number>(0)
 
-    const MINUTES = Array.from({ length: 20 }, (_, i) => i+1)
+    const VISIBLE_MINUTES = 3
+    const MINUTES = Array.from({ length: 100 }, (_, i) => i + 1)
+    const OPACITIES = Array.from({ length: VISIBLE_MINUTES })
+
 
     return (
         <PaperProvider theme={darkTheme}>
             <SafeAreaProvider>
-                <View style={styles.header}>
-                    <Text variant="displayMedium">EMOM</Text>
-                    <Text variant="bodySmall">Ogni minuto al minuto</Text>
-                </View>
+
                 <View style={{ ...styles.container }}>
-                    <View style={{height:"30%"}}>
+                    <View style={styles.header}>
+                        <Text variant="displayMedium">EMOM</Text>
+                        <Text variant="bodySmall">Ogni minuto al minuto</Text>
+                    </View>
+                    <View style={{ height: "30%" }}>
+
                         <ScrollPicker
                             dataSource={MINUTES}
                             selectedIndex={0}
-                            renderItem={(data, index) => <Text variant="displayMedium" style={{opacity: index===current ? 1 : 0.5}}>{data}</Text>}
+                            renderItem={(data, index) => {
+                                return (<Text variant="displayMedium" style={{ opacity: index === current ? 1 : 0.3 }}>{data}</Text>)
+                            }}
                             onValueChange={(data, index) => {
                                 setMinutes(data)
                                 setCurrent(index)
                             }}
-                        
-                            wrapperHeight={1}
-                            itemHeight={60}
                             wrapperBackground={darkTheme.colors.background}
                             highlightBorderWidth={2}
+                            itemHeight={darkTheme.fonts.displayMedium.fontSize + 2}
 
                         ></ScrollPicker>
 
+
                     </View>
-                    <Link href={{pathname:"/emomTimer", params:{seconds:minutes}}} ><Button mode='contained'>Start</Button></Link>
+                    <View style={{ flex: 1, justifyContent:"center"}}>
+                        <Link href={{ pathname: "/emomTimer", params: { seconds: minutes*60 } }} ><Button mode='contained'>Start</Button></Link>
+                    </View>
                 </View>
+
+
             </SafeAreaProvider>
         </PaperProvider>
 
@@ -53,9 +63,9 @@ export default function Emom() {
 }
 const styles = StyleSheet.create({
     container: {
-        flex: 3,
+        flex: 1,
         alignItems: 'center',
-        justifyContent: 'space-evenly',
+        justifyContent: 'center',
         backgroundColor: darkTheme.colors.background
     },
     header: {

@@ -1,10 +1,11 @@
 import { StyleSheet, Pressable} from "react-native"
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Text,useTheme, Button, ActivityIndicator } from "react-native-paper"
 
-export default function Timer(props: any) {
-    const [seconds, setSeconds] = useState(props.seconds)
-    const [isRunning, setIsRunning] = useState(true)
+
+export default function Timer({seconds}:{seconds:number}) {
+    const [s, setSeconds] = useState<number>(seconds)
+    const [isRunning, setIsRunning] = useState(false)
    
     useEffect(() => {
         let interval: number | NodeJS.Timeout | undefined;
@@ -12,13 +13,13 @@ export default function Timer(props: any) {
         if (isRunning) {
             console.log("Timer running")
             interval = setInterval(() => {
-                setSeconds(seconds => {
-                    if (seconds > 0) {
-                        return seconds-1
+                setSeconds(s => {
+                    if (s > 0) {
+                        return s-1
                     }
                     else{
                         clearInterval(interval)
-                        return seconds
+                        return s
                     }})
             },1000)
         } 
@@ -41,13 +42,11 @@ export default function Timer(props: any) {
     return (
         <>
         <Pressable onPress={()=> setIsRunning(!isRunning)}>
-        <Text variant="displayLarge" style={{color:theme.colors.primary}}> {formatTime(seconds)} </Text>
+        <Text variant="displayLarge" style={{color:theme.colors.primary}}> {formatTime(s)} </Text>
        </Pressable> 
-        <ActivityIndicator animating={true}  />
+        
         </>
     )
-
-
 }
 
 const style = StyleSheet.create({
@@ -56,3 +55,5 @@ const style = StyleSheet.create({
         fontWeight: "bold",
     }
 })
+
+
