@@ -11,7 +11,7 @@ export default function EmomTimer() {
     return (
         <PaperProvider theme={darkTheme}>
             <View style={{ ...styles.container }}>
-                <Timer seconds={seconds}></Timer>
+                <Timer duration={seconds}></Timer>
 
             </View>
 
