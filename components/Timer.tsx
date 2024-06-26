@@ -2,9 +2,19 @@ import { StyleSheet, Pressable } from "react-native"
 import React, { useEffect, useState, useRef } from "react"
 import { Text, useTheme, Button, ActivityIndicator } from "react-native-paper"
 import { View } from "react-native"
-import { Audio, AVPlaybackStatus, AVPlaybackStatusSuccess } from "expo-av"
+import { Audio, AVPlaybackStatus, AVPlaybackStatusSuccess, InterruptionModeAndroid, InterruptionModeIOS } from "expo-av"
 
+Audio.setAudioModeAsync({
+            allowsRecordingIOS: false,
+            staysActiveInBackground: true,
+            interruptionModeIOS: InterruptionModeIOS.DuckOthers,
+            playsInSilentModeIOS: true,
+            shouldDuckAndroid: true,
+            interruptionModeAndroid: InterruptionModeAndroid.DuckOthers,
+            playThroughEarpieceAndroid: false
+            })
 
+import BackgroundTimer, { IntervalId } from "react-native-background-timer"
 export default function Timer({ duration, preTimer = 10 }: { duration: number, preTimer: number }) {
     const [seconds, setSeconds] = useState<number>(duration)
     const [isRunning, setIsRunning] = useState(false)
@@ -37,36 +47,31 @@ export default function Timer({ duration, preTimer = 10 }: { duration: number, p
         const {sound} = await Audio.Sound.createAsync(require("../assets/sounds/three.mp3"),{},(status) => {if(status.didJustFinish) sound.unloadAsync()})
         await sound.playAsync()  
     }
-
     async function playTwoSound() {
         const {sound} = await Audio.Sound.createAsync(require("../assets/sounds/two.mp3"),{},(status) => {if(status.didJustFinish) sound.unloadAsync()})
         await sound.playAsync()  
     }
-
     async function playOneSound() {
         const {sound} = await Audio.Sound.createAsync(require("../assets/sounds/one.mp3"),{},(status) => {if(status.didJustFinish) sound.unloadAsync()})
         await sound.playAsync()  
     }
-    
     async function playThirtySound() {
         const {sound} = await Audio.Sound.createAsync(require("../assets/sounds/thirty_seconds.mp3"),{},(status) => {if(status.didJustFinish) sound.unloadAsync()})
         await sound.playAsync()  
     }
-
     async function playTenSound() {
         const {sound} = await Audio.Sound.createAsync(require("../assets/sounds/ten_seconds.mp3"),{},(status) => {if(status.didJustFinish) sound.unloadAsync()})
         await sound.playAsync()  
     }
-    
 
     useEffect(() => {
-        let interval: number | NodeJS.Timeout | undefined;
-
+        //let interval!: IntervalId | undefined;
+        let interval : any
         if (isRunning) {
             if (isPreTimer) {
                 playGetReadySound()
             }
-            interval = setInterval(() => {
+            interval = BackgroundTimer.setInterval(() => {
                 if (isPreTimer) {
                     setPreSeconds(prev => {
                         if (prev > 1) {
@@ -128,7 +133,7 @@ export default function Timer({ duration, preTimer = 10 }: { duration: number, p
                         return seconds - 1
                     }
                     else {
-                        clearInterval(interval)
+                        BackgroundTimer.clearInterval(interval)
                         playWellDoneSound()
                         setIsPreTimer(true)
                         setPreSeconds(preTimer)
@@ -140,11 +145,11 @@ export default function Timer({ duration, preTimer = 10 }: { duration: number, p
             }}, 1000)
         }
         else {
-            clearInterval(interval)
+            if (typeof interval !== undefined) BackgroundTimer.clearInterval(interval)
             setPreSeconds(preTimer)
         }
 
-        return () => { clearInterval(interval) }
+        return () => { BackgroundTimer.clearInterval(interval) }
     }, [isRunning, isPreTimer ])
 
     const theme = useTheme()
