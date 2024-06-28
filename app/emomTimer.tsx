@@ -1,5 +1,5 @@
 import { PaperProvider } from "react-native-paper";
-import { darkTheme } from "./themes";
+import { darkTheme } from "../constants/themes";
 import Timer from "@/components/Timer";
 import { StyleSheet, View } from "react-native";
 import { useLocalSearchParams } from "expo-router";

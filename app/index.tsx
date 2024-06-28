@@ -1,6 +1,6 @@
 import { Text, View } from "react-native";
 import { DefaultTheme, PaperProvider, Button } from "react-native-paper";
-import { darkTheme } from "./themes";
+import { darkTheme } from "../constants/themes";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Link } from "expo-router";
 import { StyleSheet } from "react-native";
@@ -11,6 +11,7 @@ export default function Index() {
       <SafeAreaProvider>
         <View style={{ ...styles.container, backgroundColor: darkTheme.colors.background }}>
           <Button mode="contained"> <Link href="/emomHome">EMOM</Link> </Button>
+          <Button mode="contained"> CLASSIC </Button>
         </View>
       </SafeAreaProvider>
     </PaperProvider>

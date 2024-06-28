@@ -2,67 +2,15 @@ import { StyleSheet, Pressable } from "react-native"
 import React, { useEffect, useState, useRef } from "react"
 import { Text, useTheme, Button, ActivityIndicator } from "react-native-paper"
 import { View } from "react-native"
-import { Audio, AVPlaybackStatus, AVPlaybackStatusSuccess, InterruptionModeAndroid, InterruptionModeIOS } from "expo-av"
-
-Audio.setAudioModeAsync({
-            allowsRecordingIOS: false,
-            staysActiveInBackground: true,
-            interruptionModeIOS: InterruptionModeIOS.DuckOthers,
-            playsInSilentModeIOS: true,
-            shouldDuckAndroid: true,
-            interruptionModeAndroid: InterruptionModeAndroid.DuckOthers,
-            playThroughEarpieceAndroid: false
-            })
-
 import BackgroundTimer, { IntervalId } from "react-native-background-timer"
+import { playGetReadySound, playFiveSound, playFourSound, playLetsGoSound, playOneSound, playTenSound, playThirtySound, playThreeSound, playTwoSound, playWellDoneSound } from "@/constants/Sounds"
+
+
 export default function Timer({ duration, preTimer = 10 }: { duration: number, preTimer: number }) {
     const [seconds, setSeconds] = useState<number>(duration)
     const [isRunning, setIsRunning] = useState(false)
     const [preSeconds, setPreSeconds] = useState(preTimer)
     const [isPreTimer, setIsPreTimer] = useState( preTimer > 0 ? true : false) 
-
-    async function playGetReadySound() {
-        const {sound} = await Audio.Sound.createAsync(require("../assets/sounds/get_ready.mp3"),{},(status) => {if(status.didJustFinish) sound.unloadAsync()})
-        sound.setOnPlaybackStatusUpdate((status) => {
-        })
-        await sound.playAsync()  
-    }
-    async function playLetsGoSound() {
-        const {sound} = await Audio.Sound.createAsync(require("../assets/sounds/lets_go.mp3"),{},(status) => {if(status.didJustFinish) sound.unloadAsync()})
-        await sound.playAsync()  
-    }
-    async function playWellDoneSound() {
-        const {sound} = await Audio.Sound.createAsync(require("../assets/sounds/well_done.mp3"),{},(status) => {if(status.didJustFinish) sound.unloadAsync()})
-        await sound.playAsync()  
-    }
-    async function playFiveSound() {
-        const {sound} = await Audio.Sound.createAsync(require("../assets/sounds/five.mp3"),{},(status) => {if(status.didJustFinish) sound.unloadAsync()})
-        await sound.playAsync()  
-    }
-    async function playFourSound() {
-        const {sound} = await Audio.Sound.createAsync(require("../assets/sounds/four.mp3"),{},(status) => {if(status.didJustFinish) sound.unloadAsync()})
-        await sound.playAsync()  
-    }
-    async function playThreeSound() {
-        const {sound} = await Audio.Sound.createAsync(require("../assets/sounds/three.mp3"),{},(status) => {if(status.didJustFinish) sound.unloadAsync()})
-        await sound.playAsync()  
-    }
-    async function playTwoSound() {
-        const {sound} = await Audio.Sound.createAsync(require("../assets/sounds/two.mp3"),{},(status) => {if(status.didJustFinish) sound.unloadAsync()})
-        await sound.playAsync()  
-    }
-    async function playOneSound() {
-        const {sound} = await Audio.Sound.createAsync(require("../assets/sounds/one.mp3"),{},(status) => {if(status.didJustFinish) sound.unloadAsync()})
-        await sound.playAsync()  
-    }
-    async function playThirtySound() {
-        const {sound} = await Audio.Sound.createAsync(require("../assets/sounds/thirty_seconds.mp3"),{},(status) => {if(status.didJustFinish) sound.unloadAsync()})
-        await sound.playAsync()  
-    }
-    async function playTenSound() {
-        const {sound} = await Audio.Sound.createAsync(require("../assets/sounds/ten_seconds.mp3"),{},(status) => {if(status.didJustFinish) sound.unloadAsync()})
-        await sound.playAsync()  
-    }
 
     useEffect(() => {
         //let interval!: IntervalId | undefined;
@@ -180,14 +128,6 @@ const style = StyleSheet.create({
     }
 })
 
-function usePrevious(value: any) {
-    const ref = useRef()
-    useEffect(() => {
-        ref.current = value
-    })
-    return ref.current;
 
-
-}
 
 

@@ -1,6 +1,6 @@
 import { Stack } from "expo-router";
 import { useTheme } from "react-native-paper";
-import { darkTheme } from "./themes";
+import { darkTheme } from "../constants/themes";
 import { StatusBar } from "expo-status-bar";
 export default function RootLayout() {
 

@@ -1,57 +1,48 @@
-import { PaperProvider, Surface, useTheme } from "react-native-paper";
+import { PaperProvider, Portal, Surface, useTheme } from "react-native-paper";
 import { Dimensions, FlatList, View } from "react-native";
 import { Button, Text, Modal } from "react-native-paper";
 import { StyleSheet } from "react-native";
-import { darkTheme } from "./themes";
+import { darkTheme } from "../constants/themes";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { useState } from "react";
 import { Link } from "expo-router";
 import React from "react";
 import ScrollPicker from "react-native-wheel-scrollview-picker";
+import Selector from "@/components/Selector";
 
 const { width, height } = Dimensions.get("window")
 export default function Emom() {
 
 
     const [minutes, setMinutes] = useState<number>(1)
-    const [current, setCurrent] = useState<number>(0)
+    const [rest, setRest] = useState<number>(0)
+    const [sets, setSets] = useState<number>(1)
 
     const VISIBLE_MINUTES = 3
     const MINUTES = Array.from({ length: 100 }, (_, i) => i + 1)
-    const OPACITIES = Array.from({ length: VISIBLE_MINUTES })
-
+    const SECONDS =  Array.from({ length: 100 }, (_, i) => 15*i)
+    const SETS = MINUTES
 
     return (
         <PaperProvider theme={darkTheme}>
             <SafeAreaProvider>
+
 
                 <View style={{ ...styles.container }}>
                     <View style={styles.header}>
                         <Text variant="displayMedium">EMOM</Text>
                         <Text variant="bodySmall">Ogni minuto al minuto</Text>
                     </View>
-                    <View style={{ height: "30%" }}>
-
-                        <ScrollPicker
-                            dataSource={MINUTES}
-                            selectedIndex={0}
-                            renderItem={(data, index) => {
-                                return (<Text variant="displayMedium" style={{ opacity: index === current ? 1 : 0.3 }}>{data}</Text>)
-                            }}
-                            onValueChange={(data, index) => {
-                                setMinutes(data)
-                                setCurrent(index)
-                            }}
-                            wrapperBackground={darkTheme.colors.background}
-                            highlightBorderWidth={2}
-                            itemHeight={darkTheme.fonts.displayMedium.fontSize + 2}
-
-                        ></ScrollPicker>
-
-
+                    <View style={styles.center}>
+                        {/** 
+                        
+                            */}
+                        <Selector value={minutes} values={MINUTES} singleText="MINUTO" pluralText="MINUTI" setValue={setMinutes}></Selector> 
+                        <Selector value={sets} values={SETS} singleText="SET" pluralText="SET" setValue={setSets}></Selector> 
+                        <Selector value={rest} values={SECONDS} singleText="REST" pluralText="REST" setValue={setRest} mapValues={(value) => `${String(Math.floor(value/60)).padStart(2,'0')}:${String(value%60).padStart(2,'0')}`}></Selector> 
                     </View>
-                    <View style={{ flex: 1, justifyContent:"center"}}>
-                        <Link href={{ pathname: "/emomTimer", params: { seconds: minutes*60 } }} ><Button mode='contained'>Start</Button></Link>
+                    <View style={styles.bottom}>
+                        <Link href={{ pathname: "/emomTimer", params: { seconds: minutes * 60 } }} ><Button mode='contained'>START</Button></Link>
                     </View>
                 </View>
 
@@ -65,7 +56,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'center',
         backgroundColor: darkTheme.colors.background
     },
     header: {
@@ -74,15 +64,15 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         backgroundColor: darkTheme.colors.background
     },
-    surface: {
-        padding: 8,
-        height: 80,
-        width: 80,
-        alignItems: 'center',
-        justifyContent: 'center'
+    center: {
+        flex: 3,
+        backgroundColor: darkTheme.colors.background,
+        justifyContent: "center",
+        alignItems: "flex-start"
     },
-    minutesPicker: {
-        paddingBottom: 100,
-        paddingHorizontal: 20
+    bottom: {
+        flex: 1,
+        alignItems: "center",
+        backgroundColor: darkTheme.colors.background
     }
 });
