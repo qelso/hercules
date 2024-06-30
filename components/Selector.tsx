@@ -21,9 +21,8 @@ export default function Selector({ value, values, singleText, pluralText, setVal
     return (
         <>
             <Portal>
-                <Modal visible={visible} contentContainerStyle={{ alignItems: "center" }} dismissable={false}>
-                    <View style={{height:"70%"}}>
-                        <View style={{ borderWidth: 5, borderColor: theme.colors.primary, borderRadius: 10 }}>
+                <Modal visible={visible} contentContainerStyle={{ alignItems: "center", justifyContent:"center" }} dismissable={false}>
+                        <View style={{ height: "62%", borderWidth: 3, borderColor: theme.colors.primary, borderRadius: 10, overflow:"hidden" }}>
                             <ScrollPicker
                                 dataSource={values}
                                 selectedIndex={current}
@@ -40,12 +39,9 @@ export default function Selector({ value, values, singleText, pluralText, setVal
                                 highlightBorderWidth={2}
                                 itemHeight={theme.fonts.displayMedium.fontSize + 2}
 
-
-
                             ></ScrollPicker>
-                            <Button style={{borderRadius:0, borderTopWidth:5, borderColor: theme.colors.primary}} onPress={() => setVisible(false)}>OK</Button>
+                            <Button style={{borderRadius:0, borderTopWidth:3, borderColor: theme.colors.primary, backgroundColor:theme.colors.background}} onPress={() => setVisible(false)}>OK</Button>
                         </View>
-                    </View>
                 </Modal>
             </Portal>
 

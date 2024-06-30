@@ -18,9 +18,11 @@ export default function Emom() {
     const [rest, setRest] = useState<number>(0)
     const [sets, setSets] = useState<number>(1)
 
+    const [addSets, setAddSets] = useState<boolean>(false)
+
     const VISIBLE_MINUTES = 3
     const MINUTES = Array.from({ length: 100 }, (_, i) => i + 1)
-    const SECONDS =  Array.from({ length: 100 }, (_, i) => 15*i)
+    const SECONDS =  Array.from({ length: 100 }, (_, i) => 15*(i))
     const SETS = MINUTES
 
     return (
@@ -37,12 +39,26 @@ export default function Emom() {
                         {/** 
                         
                             */}
-                        <Selector value={minutes} values={MINUTES} singleText="MINUTO" pluralText="MINUTI" setValue={setMinutes}></Selector> 
+                        <Selector value={minutes} values={MINUTES} singleText="MINUTO" pluralText="MINUTI" setValue={setMinutes}></Selector>  
+                        
+                        {
+                            addSets ? <>
                         <Selector value={sets} values={SETS} singleText="SET" pluralText="SET" setValue={setSets}></Selector> 
                         <Selector value={rest} values={SECONDS} singleText="REST" pluralText="REST" setValue={setRest} mapValues={(value) => `${String(Math.floor(value/60)).padStart(2,'0')}:${String(value%60).padStart(2,'0')}`}></Selector> 
+                        </> : <></>
+
+                        }
+                                                <Button mode="outlined" style={{alignSelf:"center"}} onPress={() => {
+                            if(addSets) {
+                                setSets(1)
+                                setRest(0)
+                            }
+                            setAddSets(!addSets)
+                            
+                            }}>{addSets ? "-" : "+"} SETS</Button>
                     </View>
                     <View style={styles.bottom}>
-                        <Link href={{ pathname: "/emomTimer", params: { seconds: minutes * 60 } }} ><Button mode='contained'>START</Button></Link>
+                        <Link href={{ pathname: "/emomTimer", params: { minutes: minutes, sets: sets, rest: rest} }} ><Button mode='contained'>START</Button></Link>
                     </View>
                 </View>
 
