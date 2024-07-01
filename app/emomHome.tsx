@@ -28,9 +28,8 @@ export default function Emom() {
     return (
         <PaperProvider theme={darkTheme}>
             <SafeAreaProvider>
-
-
                 <View style={{ ...styles.container }}>
+
                     <View style={styles.header}>
                         <Text variant="displayMedium">EMOM</Text>
                         <Text variant="bodySmall">Ogni minuto al minuto</Text>
@@ -48,7 +47,7 @@ export default function Emom() {
                         </> : <></>
 
                         }
-                                                <Button mode="outlined" style={{alignSelf:"center"}} onPress={() => {
+                                                <Button mode="outlined" style={{alignSelf:"center", margin:20}} onPress={() => {
                             if(addSets) {
                                 setSets(1)
                                 setRest(0)

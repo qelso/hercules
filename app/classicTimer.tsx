@@ -7,34 +7,30 @@ import { Text } from "react-native-paper";
 import WorkoutSequence from "@/components/WorkoutSequence";
 import { Sequence } from "@/components/WorkoutSequence";
 import { playLetsGoSound, playGetReadySound, playWellDoneSound } from "@/constants/Sounds";
+import { parse } from "@babel/core";
 
 type RouteParams = {
-    minutes: string
-    sets: string
-    rest: string
+    seconds: string
 }
 
 export default function EmomTimer() {
-    const { minutes, sets, rest } = useLocalSearchParams<RouteParams>()
-    const parsedMinutes = parseInt(minutes!)
-    const parsedSets = parseInt(sets!)
-    const parsedRest = parseInt(rest!)
-
+    const { seconds, } = useLocalSearchParams<RouteParams>()
+    const parsedSeconds = parseInt(seconds!)
+    const formatTime = (totSeconds: number) => {
+        const hours = Math.floor(totSeconds / 3600)
+        const minutes = Math.floor((totSeconds / 60) % 60)
+        const seconds = Math.floor(totSeconds % 60)
+        return (hours > 0 ? `${String(hours).padStart(2, '0')}:` : ``) + (minutes > 0 ? `${String(minutes).padStart(2, '0')}:` : ``) + `${String(seconds).padStart(2, '0')}`
+    }
     let sequence: Sequence= {
-        sequenceName: `EMOM ${minutes}'`,
-        sequenceTimers: [{seconds: 15, label: "GET READY", startSound: playGetReadySound}]
+        sequenceName: `${formatTime(parsedSeconds)} `,
+        sequenceTimers: [{seconds: parsedSeconds, label: "", startSound: playLetsGoSound}]
     }
-    for (let i = 0; i < parsedSets; i++) {
-        for (let j = 0; j < parsedMinutes; j++) {
-            sequence.sequenceTimers.push({seconds: 60, label: `${j+1}/${minutes}`, startSound: playLetsGoSound})
-        }
 
-        if (parsedRest > 0) sequence.sequenceTimers.push({seconds: parsedRest, label: "REST"})
-    }
     return (
         <PaperProvider theme={darkTheme}>
             <View style={{ ...styles.container }}>
-                <WorkoutSequence sequence={sequence} onEnd={playWellDoneSound}></WorkoutSequence>
+                <WorkoutSequence sequence={sequence} ></WorkoutSequence>
             </View>
 
         </PaperProvider>

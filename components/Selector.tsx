@@ -21,14 +21,14 @@ export default function Selector({ value, values, singleText, pluralText, setVal
     return (
         <>
             <Portal>
-                <Modal visible={visible} contentContainerStyle={{ alignItems: "center", justifyContent:"center" }} dismissable={false}>
-                        <View style={{ height: "62%", borderWidth: 3, borderColor: theme.colors.primary, borderRadius: 10, overflow:"hidden" }}>
+                <Modal visible={visible} contentContainerStyle={{ alignItems:"center" }} dismissable={false}>
+                        <View style={{ height:"59%", width:"80%", borderWidth: 3, borderColor: theme.colors.primary, borderRadius: 10, overflow:"hidden", marginBottom:50 }}>
                             <ScrollPicker
                                 dataSource={values}
                                 selectedIndex={current}
                                 renderItem={(data, index) => {
                                     return (
-                                            <Text variant="bodyLarge" style={{ opacity: index === current ? 1 : 0.3, paddingHorizontal: 60}}>{mapValues !== undefined ? mapValues(data) : data}</Text>
+                                            <Text variant="bodyLarge" style={{ opacity: index === current ? 1 : 0.3, marginHorizontal: 60}}>{mapValues !== undefined ? mapValues(data) : data}</Text>
                                     )
                                 }}
                                 onValueChange={(data, index) => {

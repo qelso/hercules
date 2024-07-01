@@ -10,8 +10,8 @@ export default function Index() {
     <PaperProvider theme={darkTheme}>
       <SafeAreaProvider>
         <View style={{ ...styles.container, backgroundColor: darkTheme.colors.background }}>
-          <Button mode="contained"> <Link href="/emomHome">EMOM</Link> </Button>
-          <Button mode="contained"> CLASSIC </Button>
+          <Button mode="contained" style={styles.button}> <Link href="/classicHome">CLASSIC</Link> </Button>
+          <Button mode="contained" style={styles.button}> <Link href="/emomHome">EMOM</Link> </Button>
         </View>
       </SafeAreaProvider>
     </PaperProvider>
@@ -25,4 +25,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  button: {
+    width:"50%",
+    margin: 5,
+    borderRadius: 10
+  }
 });

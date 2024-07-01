@@ -3,27 +3,34 @@ import React, { useEffect, useState, useRef } from "react"
 import { Text, useTheme, Button, ActivityIndicator } from "react-native-paper"
 import { View } from "react-native"
 import BackgroundTimer, { IntervalId } from "react-native-background-timer"
-import { playGetReadySound, playFiveSound, playFourSound, playLetsGoSound, playOneSound, playTenSound, playThirtySound, playThreeSound, playTwoSound, playWellDoneSound } from "@/constants/Sounds"
+import { playFiveSound, playFourSound, playOneSound, playTenSound, playThirtySound, playThreeSound, playTwoSound } from "@/constants/Sounds"
 
 type TimerProps = {
     duration: number
     label?: string
     onEnd?: any
+    onStart?: any
 }
 
-export default function Timer({ duration = 0, label, onEnd }: TimerProps) {
+export default function Timer({ duration = 0, label, onEnd, onStart}: TimerProps) {
     const [seconds, setSeconds] = useState<number>(duration)
     const [isRunning, setIsRunning] = useState(true) 
+    const [ended, setEnded] = useState(false)
+    const [started, setStarted] = useState(false)
 
     useEffect(() => {
         //let interval!: IntervalId | undefined;
         let interval : any
-        if (seconds <= 1) onEnd()
+        if (!started) {
+            onStart()
+            setStarted(true)
+        }
+        if (ended) onEnd()
         else if (isRunning) {
             interval = BackgroundTimer.setInterval(() => {
                 setSeconds(seconds => {
                     if (seconds-1 > 0) {
-                        switch ((seconds-1) % 60) {
+                        switch (seconds-1) {
                             case 30:
                                 playThirtySound()
                                 break
@@ -44,15 +51,13 @@ export default function Timer({ duration = 0, label, onEnd }: TimerProps) {
                                 break
                             case 1:
                                 playOneSound()
-                                break
-                            case 0:
-                                if (seconds-1 > 0) playLetsGoSound()
+                                break 
                         }
                         return seconds-1
                     }
                     else {
                         BackgroundTimer.clearInterval(interval)
-                        setIsRunning(false)
+                        setEnded(true)
                         return seconds
                     }
                 })
@@ -62,7 +67,7 @@ export default function Timer({ duration = 0, label, onEnd }: TimerProps) {
             if (typeof interval !== undefined) BackgroundTimer.clearInterval(interval)  
         }
         return () => { BackgroundTimer.clearInterval(interval) }
-    }, [isRunning])
+    }, [isRunning, ended])
 
     const theme = useTheme()
 
@@ -77,8 +82,8 @@ export default function Timer({ duration = 0, label, onEnd }: TimerProps) {
 
         <Pressable onPress={() => setIsRunning(!isRunning)}>
             <View style={{ justifyContent: "center", alignItems: "center" }}>
-                <Text variant="displayLarge" style={{ color: theme.colors.primary }}> {formatTime(seconds)} </Text>
-                <Text variant="displaySmall" style={{ color: theme.colors.primary }}> {isRunning ? label : "Paused"} </Text>
+                <Text variant="displayLarge" style={{ color: theme.colors.primary }}> {isRunning ? formatTime(seconds) : "PAUSED"} </Text>
+                <Text variant="displaySmall" style={{ color: theme.colors.primary }}> { label } </Text>
             </View>
         </Pressable >
 
