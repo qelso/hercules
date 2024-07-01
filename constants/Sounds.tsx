@@ -52,3 +52,7 @@ export async function playTenSound() {
     const { sound } = await Audio.Sound.createAsync(require("../assets/sounds/ten_seconds.mp3"), {}, (status) => { if (status.didJustFinish) sound.unloadAsync() })
     await sound.playAsync()
 }
+export async function playRestSound() {
+    const { sound } = await Audio.Sound.createAsync(require("../assets/sounds/rest.mp3"), {}, (status) => { if (status.didJustFinish) sound.unloadAsync() })
+    await sound.playAsync()
+}
