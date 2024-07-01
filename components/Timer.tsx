@@ -22,10 +22,10 @@ export default function Timer({ duration = 0, label, onEnd, onStart}: TimerProps
         //let interval!: IntervalId | undefined;
         let interval : any
         if (!started) {
-            onStart()
+            if (onStart !== undefined) onStart()
             setStarted(true)
         }
-        if (ended) onEnd()
+        if (ended && onEnd !== undefined) onEnd()
         else if (isRunning) {
             interval = BackgroundTimer.setInterval(() => {
                 setSeconds(seconds => {

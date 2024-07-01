@@ -39,7 +39,7 @@ export default function WorkoutSequence({ sequence, onEnd }: WorkoutProps) {
                 } else {
                     setCurrentTimer(0)
                     setStarted(false)
-                    onEnd()
+                    if (onEnd !== undefined) onEnd()
 
                 }
             }}></Timer>

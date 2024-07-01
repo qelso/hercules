@@ -6,7 +6,7 @@ import { useLocalSearchParams } from "expo-router";
 import { Text } from "react-native-paper";
 import WorkoutSequence from "@/components/WorkoutSequence";
 import { Sequence } from "@/components/WorkoutSequence";
-import { playLetsGoSound, playGetReadySound, playWellDoneSound } from "@/constants/Sounds";
+import { playLetsGoSound, playGetReadySound, playWellDoneSound, playRestSound } from "@/constants/Sounds";
 
 type RouteParams = {
     minutes: string
@@ -29,7 +29,7 @@ export default function EmomTimer() {
             sequence.sequenceTimers.push({seconds: 60, label: `${j+1}/${minutes}`, startSound: playLetsGoSound})
         }
 
-        if (parsedRest > 0) sequence.sequenceTimers.push({seconds: parsedRest, label: "REST"})
+        if (parsedRest > 0) sequence.sequenceTimers.push({seconds: parsedRest, label: "REST", startSound: playRestSound})
     }
     return (
         <PaperProvider theme={darkTheme}>
